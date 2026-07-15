@@ -1,0 +1,23 @@
+{
+  "name": "infergate",
+  "private": true,
+  "version": "0.1.0",
+  "description": "",
+  "scripts": {
+    "dev:gateway": "pnpm --filter @infergate/gateway dev",
+    "build": "pnpm -r build",
+    "typecheck": "pnpm -r typecheck"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KawanjotSingh27/infergate.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/KawanjotSingh27/infergate/issues"
+  },
+  "homepage": "https://github.com/KawanjotSingh27/infergate#readme"
+}
