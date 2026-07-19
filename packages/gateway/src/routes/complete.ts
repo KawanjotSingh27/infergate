@@ -2,6 +2,7 @@ import type { FastifyInstance } from "fastify";
 import { z } from "zod";
 import type { ProviderRegistry } from "../providers/registry.js";
 import { ProviderError } from "../providers/types.js";
+import { logRequest } from "../lib/db.js";
 
 const requestSchema = z.object({
   messages: z.array(
@@ -28,6 +29,16 @@ export function registerCompleteRoute(app: FastifyInstance, registry: ProviderRe
 
     try {
       const result = await provider.complete({ messages, model, maxTokens, temperature });
+      logRequest({
+        tenantId: null,
+        provider: result.provider,
+        model: result.model,
+        tokensIn: result.tokensIn,
+        tokensOut: result.tokensOut,
+        costUsd: result.costUsd,
+        latencyMs: result.latencyMs,
+        cacheHit: result.cacheHit,
+      }).catch((err) => app.log.error({ err }, "failed to log request"));
       return reply.send(result);
     } catch (err) {
       if (err instanceof ProviderError) {

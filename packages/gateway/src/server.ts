@@ -1,6 +1,7 @@
 import Fastify from "fastify";
 import { ProviderRegistry } from "./providers/registry.js";
 import { registerCompleteRoute } from "./routes/complete.js";
+import "dotenv/config";
 
 const app = Fastify({
   logger: {
@@ -9,7 +10,10 @@ const app = Fastify({
   },
 });
 
-const registry = new ProviderRegistry();
+const registry = new ProviderRegistry({
+  openaiKey:process.env.OPENAI_API_KEY,
+  anthropicKey:process.env.ANTHROPIC_API_KEY
+});
 
 app.get("/health", async () => {
   return { status: "ok" };
