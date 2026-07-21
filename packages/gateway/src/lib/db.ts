@@ -33,3 +33,9 @@ export async function logRequest(entry: RequestLogEntry) {
        ${entry.tokensOut}, ${entry.costUsd}, ${entry.latencyMs}, ${entry.cacheHit}, ${entry.error ?? null})
   `;
 }
+
+export async function findTenantByApiKey(apiKey:string){
+  const db=getDb();
+  const res=await db`SELECT id, name FROM tenants WHERE api_key = ${apiKey}`;
+  return res[0]??null;
+}

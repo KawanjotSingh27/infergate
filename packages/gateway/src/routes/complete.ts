@@ -3,6 +3,7 @@ import { z } from "zod";
 import type { ProviderRegistry } from "../providers/registry.js";
 import { ProviderError } from "../providers/types.js";
 import { logRequest } from "../lib/db.js";
+import {authHook} from '../lib/auth.js';
 
 const requestSchema = z.object({
   messages: z.array(
@@ -18,7 +19,7 @@ const requestSchema = z.object({
 });
 
 export function registerCompleteRoute(app: FastifyInstance, registry: ProviderRegistry) {
-  app.post("/v1/complete", async (request, reply) => {
+  app.post("/v1/complete", {preHandler:authHook}, async (request, reply) => {
     const parsed = requestSchema.safeParse(request.body);
     if (!parsed.success) {
       return reply.status(400).send({ error: "Invalid request", details: parsed.error.flatten() });
@@ -30,7 +31,7 @@ export function registerCompleteRoute(app: FastifyInstance, registry: ProviderRe
     try {
       const result = await provider.complete({ messages, model, maxTokens, temperature });
       logRequest({
-        tenantId: null,
+        tenantId: (request as any).tenant.id,
         provider: result.provider,
         model: result.model,
         tokensIn: result.tokensIn,
