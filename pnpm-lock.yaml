@@ -42,6 +42,18 @@ importers:
         specifier: ^5.6.2
         version: 5.9.3
 
+  packages/hnsw:
+    devDependencies:
+      '@types/node':
+        specifier: ^22.20.1
+        version: 22.20.1
+      tsx:
+        specifier: ^4.23.1
+        version: 4.23.1
+      typescript:
+        specifier: ^5.6.2
+        version: 5.9.3
+
 packages:
 
   '@esbuild/aix-ppc64@0.28.1':
