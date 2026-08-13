@@ -16,7 +16,8 @@
     "ioredis": "^5.11.1",
     "pino": "^9.4.0",
     "postgres": "^3.4.4",
-    "zod": "^3.23.8"
+    "zod": "^3.23.8",
+    "@infergate/hnsw": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "^22.7.4",

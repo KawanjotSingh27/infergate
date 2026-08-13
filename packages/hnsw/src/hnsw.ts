@@ -59,7 +59,7 @@ export class HNSWIndex {
     entryId: number,
     layer: number,
     ef: number
-  ): number[] {
+  ): { id: number; distance: number }[] {
     const entryNode = this.nodes.get(entryId)!;
     const entryDist = this.distance(query, entryNode.vector);
 
@@ -98,10 +98,10 @@ export class HNSWIndex {
       }
     }
 
-    const result: number[] = [];
+    const result: { id: number; distance: number }[]=[];
     let item;
     while ((item = best.pop())) {
-      result.push(item.id);
+      result.push({id:item.id,distance:item.dist});
     }
     return result.reverse();
   }
@@ -146,7 +146,7 @@ export class HNSWIndex {
     for (let l = Math.min(level, currentLayer); l >= 0; l--) {
       const candidates = this.searchLayerCandidates(vector, currentEntryId, l, this.config.efConstruction);
 
-      const selectedNeighbors = candidates.slice(0, this.config.M);
+      const selectedNeighbors = candidates.slice(0, this.config.M).map((c) => c.id);
       newNode.neighbors[l] = selectedNeighbors;
 
       for (const neighborId of selectedNeighbors) {
@@ -158,7 +158,7 @@ export class HNSWIndex {
         }
       }
       
-      currentEntryId = candidates[0] ?? currentEntryId;
+      currentEntryId = candidates[0]?.id ?? currentEntryId;
     }
 
     if (level > this.nodes.get(this.entryPointId!)!.level) {
@@ -168,7 +168,7 @@ export class HNSWIndex {
     return nodeId;
   }
 
-  search(query: Float32Array, k: number, efSearch: number): number[] {
+  search(query: Float32Array, k: number, efSearch: number): { id: number; distance: number }[]{
     if (this.nodes.size === 0) return [];
 
     const effectiveEf = Math.max(efSearch, k);

@@ -10,6 +10,9 @@ importers:
 
   packages/gateway:
     dependencies:
+      '@infergate/hnsw':
+        specifier: workspace:*
+        version: link:../hnsw
       dotenv:
         specifier: ^16.6.1
         version: 16.6.1

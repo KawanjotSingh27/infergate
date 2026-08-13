@@ -23,7 +23,7 @@ console.time("search");
 const results: number[][] = [];
 for (const q of queries) {
   const hnswIds = index.search(new Float32Array(q), K, EF_SEARCH);
-  const originalIds = hnswIds.map((id) => idMap[id]!);
+  const originalIds = hnswIds.map((r) => idMap[r.id]!);
   results.push(originalIds);
 }
 console.timeEnd("search");

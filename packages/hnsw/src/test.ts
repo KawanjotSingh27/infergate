@@ -16,7 +16,6 @@ for (const [x, y] of points) {
 
 console.log("Inserted ids:", ids);
 
-// query near the (0,0) cluster - should return nodes 0-3, not the (10,10) cluster
 const query = new Float32Array([0.5, 0.5]);
 const results = index.search(query, 3, 20);
 console.log("Search results (should be near [0.5, 0.5]):", results);
